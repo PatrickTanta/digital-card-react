@@ -1,11 +1,25 @@
-import { FC, ReactNode } from 'react'
+import { FC } from 'react'
 import { Outlet } from 'react-router-dom'
+import { TheAppbar } from '../components/ui/TheAppbar'
+import LoginAdmin from '../pages/Admin/LoginAdmin'
 
-export const AdminLayout: FC = () => {
+interface Props {
+    title?: string
+}
+
+export const AdminLayout: FC<Props> = ({ title }) => {
+    const auth = null
+
+    if (!auth) return <LoginAdmin />
+
     return (
-        <div>
-            <p>AdminLayout</p>
-            <Outlet />
-        </div>
+        <>
+            <main>
+                <TheAppbar title={title ?? ''} />
+                <div>
+                    <Outlet />
+                </div>
+            </main>
+        </>
     )
 }
