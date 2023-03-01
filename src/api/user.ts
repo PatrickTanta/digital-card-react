@@ -1,7 +1,7 @@
 import { ILoginAdminFormData } from '../interfaces'
 import { BASE_API } from '../utils/contants'
 
-export async function loginApi(formData: ILoginAdminFormData) {
+export const loginApi = async (formData: ILoginAdminFormData) => {
     try {
         const url = `${BASE_API}/auth/login/`
         const params = {
@@ -18,8 +18,23 @@ export async function loginApi(formData: ILoginAdminFormData) {
         }
         const result = response.json()
         return result
-    } catch (e) {
-        console.log(e)
-        return
+    } catch (error) {
+        throw error
+    }
+}
+
+export const getMeApi = async (token: string) => {
+    try {
+        const url = `${BASE_API}/auth/me/`
+        const params = {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        }
+        const response = await fetch(url, params)
+        const result = response.json()
+        return result
+    } catch (error) {
+        throw error
     }
 }

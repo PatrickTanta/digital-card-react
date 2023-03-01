@@ -1,12 +1,15 @@
-import { useState } from 'react'
 import { Box, Button, Grid, TextField, Typography } from '@mui/material'
 import { SubmitHandler, useForm } from 'react-hook-form'
 import { isEmail } from '../../utils'
 import { AuthLayout } from '../../components/layouts/AuthLayout'
 import { loginApi } from '../../api/user'
 import { ILoginAdminFormData } from '../../interfaces'
+import { toast } from 'react-toastify'
+import { useAuth } from '../../hooks'
 
 const LoginAdmin = () => {
+    const { login } = useAuth()
+
     const {
         register,
         handleSubmit,
@@ -19,10 +22,10 @@ const LoginAdmin = () => {
         password
     }: ILoginAdminFormData) => {
         try {
-            const response = await loginApi({ email, password })
+            const { access } = await loginApi({ email, password })
+            login(access)
         } catch (e) {
-            console.log('Error')
-            console.log(e)
+            toast.error(e.message)
         }
     }
 
