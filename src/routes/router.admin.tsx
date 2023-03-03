@@ -1,7 +1,8 @@
 import { ErrorPage } from '../pages/ErrorPage'
 import { AdminLayout } from '../layouts'
-import { HomeAdmin } from '../pages/Admin/HomeAdmin'
 import LoginAdmin from '../pages/Admin/LoginAdmin'
+import HomeAdmin from '../pages/Admin/HomeAdmin'
+import OrderAdmin from '../pages/Admin/OrderAdmin'
 
 export const routesAdmin = [
     {
@@ -19,6 +20,15 @@ export const routesAdmin = [
                 handle: {
                     layout: {
                         title: 'Home page'
+                    }
+                }
+            },
+            {
+                path: 'orders',
+                element: <OrderAdmin />,
+                handle: {
+                    layout: {
+                        title: 'Orders page'
                     }
                 }
             }

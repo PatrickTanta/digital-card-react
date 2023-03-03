@@ -7,7 +7,7 @@ import { ILoginAdminFormData } from '../../interfaces'
 import { toast } from 'react-toastify'
 import { useAuth } from '../../hooks'
 
-const LoginAdmin = () => {
+const LoginAdmin: JSX.Element = () => {
     const { login } = useAuth()
 
     const {

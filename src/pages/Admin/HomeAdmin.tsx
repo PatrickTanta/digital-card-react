@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import { useAuth } from '../../hooks/useAuth'
 
-export const HomeAdmin = () => {
+const HomeAdmin: JSX.Element = () => {
     const { logout } = useAuth()
 
     return (
@@ -11,3 +11,5 @@ export const HomeAdmin = () => {
         </div>
     )
 }
+
+export default HomeAdmin

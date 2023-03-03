@@ -3,24 +3,38 @@ import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
 import MoreIcon from '@mui/icons-material/MoreVert'
+import LogoutIcon from '@mui/icons-material/Logout'
 import Button from '@mui/material/Button'
 import { Divider, Typography } from '@mui/material'
 import { useState, FC } from 'react'
 import { TheAppbarMenu } from './TheAppbarMenu'
 import { NavLink } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
+import { useUi } from '../../hooks/useUi'
 
 export const TheAppbar: FC<{ title: string }> = ({ title }) => {
     const mobileMenuId = 'primary-search-account-menu-mobile'
     const [moreAnchorEl, setMoreAnchorEl] = useState(null)
     const isMobileMenuOpen = Boolean(moreAnchorEl)
-    const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-        setMoreAnchorEl(event.currentTarget)
-    }
+    // const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+    //     setMoreAnchorEl(event.currentTarget)
+    // }
     const handleMenuClose = () => {
         setMoreAnchorEl(null)
     }
 
     const menuItems = [{ item: 'About', path: '/about' }]
+
+    const { auth, logout } = useAuth()
+
+    const customName = () => {
+        if (auth.me?.first_name && auth.me?.last_name) {
+            return `${auth.me?.first_name} ${auth.me?.last_name}`
+        }
+        return auth.me?.email
+    }
+
+    const { toggleSideMenu, isMenuOpen } = useUi()
 
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -48,6 +62,9 @@ export const TheAppbar: FC<{ title: string }> = ({ title }) => {
                             </Typography>
                         </NavLink>
                     </Button>
+                    <IconButton onClick={toggleSideMenu}>
+                        <MoreIcon />
+                    </IconButton>
                     <Divider
                         orientation="vertical"
                         flexItem
@@ -60,7 +77,7 @@ export const TheAppbar: FC<{ title: string }> = ({ title }) => {
                             alignItems: 'center'
                         }}
                     >
-                        <Button
+                        {/* <Button
                             variant="text"
                             color="secondary"
                             sx={{
@@ -113,8 +130,8 @@ export const TheAppbar: FC<{ title: string }> = ({ title }) => {
                                     Shop
                                 </Typography>
                             </NavLink>
-                        </Button>
-                        <IconButton
+                        </Button> */}
+                        {/* <IconButton
                             size="small"
                             color="inherit"
                             aria-label="show more"
@@ -124,7 +141,7 @@ export const TheAppbar: FC<{ title: string }> = ({ title }) => {
                             onClick={handleMenuOpen}
                         >
                             <MoreIcon sx={{ margin: 0 }} />
-                        </IconButton>
+                        </IconButton> */}
                         <TheAppbarMenu
                             anchorEl={moreAnchorEl}
                             anchorOrigin={{
@@ -144,11 +161,26 @@ export const TheAppbar: FC<{ title: string }> = ({ title }) => {
                         />
                     </Box>
                     <Box sx={{ flexGrow: 1 }} />
-                    <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-                        <Button>Sign Up</Button>
-                    </Box>
-                    <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
-                        <Button>Login</Button>
+                    <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ display: { xs: 'none', md: 'flex' } }}
+                    />
+                    <Typography sx={{ mx: 2 }}>Hola, {customName()}</Typography>
+                    <Divider
+                        orientation="vertical"
+                        flexItem
+                        sx={{ display: { xs: 'none', md: 'flex' } }}
+                    />
+                    <Box sx={{ ml: 3 }}>
+                        <IconButton
+                            color="white"
+                            aria-label="Logout"
+                            component="label"
+                            onClick={logout}
+                        >
+                            <LogoutIcon />
+                        </IconButton>
                     </Box>
                 </Toolbar>
             </AppBar>

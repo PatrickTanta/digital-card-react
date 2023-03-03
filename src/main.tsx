@@ -10,25 +10,28 @@ import { CssBaseline, ThemeProvider } from '@mui/material'
 import { lightTheme } from './themes'
 import { ToastContainer } from 'react-toastify'
 import { AuthProvider } from './context'
+import { UiProvider } from './context/ui/UiProvider'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <AuthProvider>
-            <ThemeProvider theme={lightTheme}>
-                <CssBaseline />
-                <ToastContainer
-                    position="bottom-center"
-                    hideProgressBar
-                    newestOnTop
-                    closeOnClick
-                    pauseOnFocusLoss
-                    draggable
-                    autoClose={5000}
-                    pauseOnHover={false}
-                    rtl={false}
-                />
-                <RouterProvider router={router} />
-            </ThemeProvider>
-        </AuthProvider>
+        <UiProvider>
+            <AuthProvider>
+                <ThemeProvider theme={lightTheme}>
+                    <CssBaseline />
+                    <ToastContainer
+                        position="bottom-center"
+                        hideProgressBar
+                        newestOnTop
+                        closeOnClick
+                        pauseOnFocusLoss
+                        draggable
+                        autoClose={5000}
+                        pauseOnHover={false}
+                        rtl={false}
+                    />
+                    <RouterProvider router={router} />
+                </ThemeProvider>
+            </AuthProvider>
+        </UiProvider>
     </React.StrictMode>
 )
