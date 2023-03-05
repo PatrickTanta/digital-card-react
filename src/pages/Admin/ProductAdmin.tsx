@@ -1,8 +1,8 @@
 import { FC } from 'react'
-export const OrderAdmin: FC = () => {
+export const ProductAdmin: FC = () => {
     return (
         <div>
-            <h1>OrderAdmin</h1>
+            <h1>ProductAdmin</h1>
         </div>
     )
 }

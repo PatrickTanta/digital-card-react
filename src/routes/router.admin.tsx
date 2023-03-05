@@ -1,8 +1,15 @@
 import { ErrorPage } from '../pages/ErrorPage'
 import { AdminLayout } from '../layouts'
-import LoginAdmin from '../pages/Admin/LoginAdmin'
-import HomeAdmin from '../pages/Admin/HomeAdmin'
-import OrderAdmin from '../pages/Admin/OrderAdmin'
+import {
+    CategoryAdmin,
+    HistoryAdmin,
+    HomeAdmin,
+    LoginAdmin,
+    OrderAdmin,
+    ProductAdmin,
+    TableAdmin,
+    UsersAdmin
+} from '../pages/Admin'
 
 export const routesAdmin = [
     {
@@ -16,21 +23,31 @@ export const routesAdmin = [
         children: [
             {
                 path: 'home',
-                element: <HomeAdmin />,
-                handle: {
-                    layout: {
-                        title: 'Home page'
-                    }
-                }
+                element: <HomeAdmin />
             },
             {
                 path: 'orders',
-                element: <OrderAdmin />,
-                handle: {
-                    layout: {
-                        title: 'Orders page'
-                    }
-                }
+                element: <OrderAdmin />
+            },
+            {
+                path: 'tables',
+                element: <TableAdmin />
+            },
+            {
+                path: 'history',
+                element: <HistoryAdmin />
+            },
+            {
+                path: 'products',
+                element: <ProductAdmin />
+            },
+            {
+                path: 'users',
+                element: <UsersAdmin />
+            },
+            {
+                path: 'categories',
+                element: <CategoryAdmin />
             }
         ]
     }
