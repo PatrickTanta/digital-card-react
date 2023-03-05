@@ -14,8 +14,8 @@ import { UiProvider } from './context/ui/UiProvider'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <UiProvider>
-            <AuthProvider>
+        <AuthProvider>
+            <UiProvider>
                 <ThemeProvider theme={lightTheme}>
                     <CssBaseline />
                     <ToastContainer
@@ -31,7 +31,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
                     />
                     <RouterProvider router={router} />
                 </ThemeProvider>
-            </AuthProvider>
-        </UiProvider>
+            </UiProvider>
+        </AuthProvider>
     </React.StrictMode>
 )

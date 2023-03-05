@@ -6,9 +6,11 @@ import { loginApi } from '../../api/user'
 import { ILoginAdminFormData } from '../../interfaces'
 import { toast } from 'react-toastify'
 import { useAuth } from '../../hooks'
+import { FC } from 'react'
+import { redirect, Navigate } from 'react-router-dom'
 
-const LoginAdmin: JSX.Element = () => {
-    const { login } = useAuth()
+export const LoginAdmin: FC = () => {
+    const { auth, login } = useAuth()
 
     const {
         register,
@@ -24,10 +26,13 @@ const LoginAdmin: JSX.Element = () => {
         try {
             const { access } = await loginApi({ email, password })
             login(access)
+            redirect('/admin/home')
         } catch (e) {
             toast.error(e.message)
         }
     }
+
+    if (auth?.me) return <Navigate to="/admin/home" />
 
     return (
         <AuthLayout>
@@ -95,5 +100,3 @@ const LoginAdmin: JSX.Element = () => {
         </AuthLayout>
     )
 }
-
-export default LoginAdmin

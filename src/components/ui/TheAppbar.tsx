@@ -2,188 +2,131 @@ import AppBar from '@mui/material/AppBar'
 import Box from '@mui/material/Box'
 import Toolbar from '@mui/material/Toolbar'
 import IconButton from '@mui/material/IconButton'
-import MoreIcon from '@mui/icons-material/MoreVert'
 import LogoutIcon from '@mui/icons-material/Logout'
 import Button from '@mui/material/Button'
 import { Divider, Typography } from '@mui/material'
 import { useState, FC } from 'react'
 import { TheAppbarMenu } from './TheAppbarMenu'
-import { NavLink } from 'react-router-dom'
+import { NavLink, redirect } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
 import { useUi } from '../../hooks/useUi'
+import { MenuOutlined } from '@mui/icons-material'
 
-export const TheAppbar: FC<{ title: string }> = ({ title }) => {
+export const TheAppbar: FC = () => {
     const mobileMenuId = 'primary-search-account-menu-mobile'
     const [moreAnchorEl, setMoreAnchorEl] = useState(null)
     const isMobileMenuOpen = Boolean(moreAnchorEl)
-    // const handleMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    //     setMoreAnchorEl(event.currentTarget)
-    // }
     const handleMenuClose = () => {
         setMoreAnchorEl(null)
     }
-
     const menuItems = [{ item: 'About', path: '/about' }]
 
     const { auth, logout } = useAuth()
 
-    const customName = () => {
-        if (auth.me?.first_name && auth.me?.last_name) {
-            return `${auth.me?.first_name} ${auth.me?.last_name}`
-        }
-        return auth.me?.email
+    const doLogout = () => {
+        logout()
+        redirect('/admin/login')
     }
 
-    const { toggleSideMenu, isMenuOpen } = useUi()
+    const customName = () => {
+        if (auth?.me?.first_name && auth.me?.last_name) {
+            return `${auth.me?.first_name} ${auth.me?.last_name}`
+        }
+        return auth?.me?.email
+    }
+
+    const { toggleSideMenu } = useUi()
 
     return (
-        <Box sx={{ flexGrow: 1 }}>
-            <AppBar position="static" sx={{ overflow: 'hidden' }}>
-                <Toolbar variant="dense">
-                    <h1>{title}</h1>
-                    <Button
-                        variant="text"
-                        color="secondary"
-                        sx={{
-                            mr: 2,
-                            height: '34px',
-                            display: { xs: 'none', md: 'flex' }
+        <AppBar
+            position="fixed"
+            sx={{
+                width: { sm: 'calc(100% - 250px)' },
+                ml: { sm: '260px' }
+            }}
+        >
+            <Toolbar variant="dense">
+                {/* <Button
+                    variant="text"
+                    color="secondary"
+                    sx={{
+                        mr: 2,
+                        height: '34px',
+                        display: { xs: 'none', md: 'flex' }
+                    }}
+                >
+                    <NavLink to="/" style={{ textDecoration: 'none' }}>
+                        <Typography
+                            textAlign="center"
+                            fontWeight={700}
+                            fontSize={20}
+                            fontStyle="italic"
+                            textTransform="none"
+                            sx={{ color: '#FFF' }}
+                        >
+                            Panel de Administración
+                        </Typography>
+                    </NavLink>
+                </Button> */}
+                <IconButton
+                    sx={{ display: { xs: 'flex', md: 'none' } }}
+                    onClick={toggleSideMenu}
+                >
+                    <MenuOutlined />
+                </IconButton>
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ display: { xs: 'none', md: 'flex' } }}
+                />
+                <Box
+                    sx={{
+                        margin: { sm: '0 19px', xs: '0' },
+                        display: 'flex',
+                        alignItems: 'center'
+                    }}
+                >
+                    <TheAppbarMenu
+                        anchorEl={moreAnchorEl}
+                        anchorOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left'
                         }}
+                        id={mobileMenuId}
+                        keepMounted
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'right'
+                        }}
+                        open={isMobileMenuOpen}
+                        onClose={handleMenuClose}
+                        sx={{ width: '187px' }}
+                        items={menuItems}
+                    />
+                </Box>
+                <Box sx={{ flexGrow: 1 }} />
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ display: { xs: 'none', md: 'flex' } }}
+                />
+                <Typography sx={{ mx: 2 }}>Hola, {customName()}</Typography>
+                <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ display: { xs: 'none', md: 'flex' } }}
+                />
+                <Box sx={{ ml: 3 }}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="Logout"
+                        component="label"
+                        onClick={doLogout}
                     >
-                        <NavLink to="/" style={{ textDecoration: 'none' }}>
-                            <Typography
-                                textAlign="center"
-                                fontWeight={700}
-                                fontSize={20}
-                                fontStyle="italic"
-                                sx={{ color: '#FFF' }}
-                            >
-                                KAPA
-                            </Typography>
-                        </NavLink>
-                    </Button>
-                    <IconButton onClick={toggleSideMenu}>
-                        <MoreIcon />
+                        <LogoutIcon />
                     </IconButton>
-                    <Divider
-                        orientation="vertical"
-                        flexItem
-                        sx={{ display: { xs: 'none', md: 'flex' } }}
-                    />
-                    <Box
-                        sx={{
-                            margin: { sm: '0 19px', xs: '0' },
-                            display: 'flex',
-                            alignItems: 'center'
-                        }}
-                    >
-                        {/* <Button
-                            variant="text"
-                            color="secondary"
-                            sx={{
-                                color: 'white',
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                textTransform: 'none',
-                                height: '34px'
-                            }}
-                        >
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'selected' : ''
-                                }
-                                style={{ textDecoration: 'none' }}
-                                to="/"
-                            >
-                                <Typography
-                                    textAlign="center"
-                                    fontWeight={700}
-                                    sx={{ color: '#FFF' }}
-                                >
-                                    Games
-                                </Typography>
-                            </NavLink>
-                        </Button>
-                        <Button
-                            variant="text"
-                            color="secondary"
-                            sx={{
-                                color: 'white',
-                                fontWeight: 'bold',
-                                fontSize: '16px',
-                                textTransform: 'none',
-                                height: '34px'
-                            }}
-                        >
-                            <NavLink
-                                to="/shop"
-                                style={{ textDecoration: 'none' }}
-                                className={({ isActive }) =>
-                                    isActive ? 'selected' : ''
-                                }
-                            >
-                                <Typography
-                                    textAlign="center"
-                                    fontWeight={700}
-                                    sx={{ color: '#FFF' }}
-                                >
-                                    Shop
-                                </Typography>
-                            </NavLink>
-                        </Button> */}
-                        {/* <IconButton
-                            size="small"
-                            color="inherit"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            sx={{ width: '32px' }}
-                            onClick={handleMenuOpen}
-                        >
-                            <MoreIcon sx={{ margin: 0 }} />
-                        </IconButton> */}
-                        <TheAppbarMenu
-                            anchorEl={moreAnchorEl}
-                            anchorOrigin={{
-                                vertical: 'top',
-                                horizontal: 'left'
-                            }}
-                            id={mobileMenuId}
-                            keepMounted
-                            transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'right'
-                            }}
-                            open={isMobileMenuOpen}
-                            onClose={handleMenuClose}
-                            sx={{ width: '187px' }}
-                            items={menuItems}
-                        />
-                    </Box>
-                    <Box sx={{ flexGrow: 1 }} />
-                    <Divider
-                        orientation="vertical"
-                        flexItem
-                        sx={{ display: { xs: 'none', md: 'flex' } }}
-                    />
-                    <Typography sx={{ mx: 2 }}>Hola, {customName()}</Typography>
-                    <Divider
-                        orientation="vertical"
-                        flexItem
-                        sx={{ display: { xs: 'none', md: 'flex' } }}
-                    />
-                    <Box sx={{ ml: 3 }}>
-                        <IconButton
-                            color="white"
-                            aria-label="Logout"
-                            component="label"
-                            onClick={logout}
-                        >
-                            <LogoutIcon />
-                        </IconButton>
-                    </Box>
-                </Toolbar>
-            </AppBar>
-        </Box>
+                </Box>
+            </Toolbar>
+        </AppBar>
     )
 }

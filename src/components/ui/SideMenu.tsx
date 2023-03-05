@@ -1,101 +1,107 @@
 import {
     Box,
-    Divider,
-    Drawer,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
-    ListSubheader
+    Typography
 } from '@mui/material'
-import {
-    AccountCircleOutlined,
-    AdminPanelSettings,
-    CategoryOutlined,
-    ConfirmationNumberOutlined,
-    EscalatorWarningOutlined,
-    FemaleOutlined,
-    LoginOutlined,
-    MaleOutlined,
-    VpnKeyOutlined
-} from '@mui/icons-material'
-import { useUi } from '../../hooks'
-import { NavLink } from 'react-router-dom'
-import AccessAlarmsIcon from '@mui/icons-material/AccessAlarms'
+import { ConfirmationNumberOutlined } from '@mui/icons-material'
+import { NavLink, useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useAuth } from '../../hooks/useAuth'
+import TableBarIcon from '@mui/icons-material/TableBar'
+import HistoryIcon from '@mui/icons-material/History'
+import CategoryIcon from '@mui/icons-material/Category'
+import ProductionQuantityLimitsIcon from '@mui/icons-material/ProductionQuantityLimits'
+import GroupIcon from '@mui/icons-material/Group'
+import ListItemButton from '@mui/material/ListItemButton'
+import Divider from '@mui/material/Divider'
+
+const ADMIN_MENU_ITEMS = [
+    {
+        id: 1,
+        title: 'Pedidos',
+        path: '/admin/orders',
+        icon: <ConfirmationNumberOutlined />
+    },
+    {
+        id: 2,
+        title: 'Mesas',
+        path: '/admin/tables',
+        icon: <TableBarIcon />
+    },
+    {
+        id: 3,
+        title: 'Historial de pagos',
+        path: '/admin/history',
+        icon: <HistoryIcon />
+    },
+    {
+        id: 4,
+        title: 'Categorias',
+        path: '/admin/categories',
+        icon: <CategoryIcon />
+    },
+    {
+        id: 5,
+        title: 'Productos',
+        path: '/admin/products',
+        icon: <ProductionQuantityLimitsIcon />
+    }
+]
 
 export const SideMenu = () => {
-    const { isMenuOpen, toggleSideMenu } = useUi()
+    const [menuItems, setMenuItems] = useState(ADMIN_MENU_ITEMS)
+    const { auth } = useAuth()
 
-    const ADMIN_MENU_ITEMS = [
-        {
-            id: 1,
-            title: 'Pedidos',
-            path: '/admin/orders',
-            icon: <ConfirmationNumberOutlined />
-        },
-        {
-            id: 2,
-            title: 'Mesas',
-            path: '/admin/tables',
-            icon: <AccessAlarmsIcon />
-        },
-        {
-            id: 3,
-            title: 'Historial de pagos',
-            path: '/admin/tables',
-            icon: <ConfirmationNumberOutlined />
-        },
-        {
-            id: 4,
-            title: 'Categorias',
-            path: '/admin/categories',
-            icon: <AccessAlarmsIcon />
-        },
-        {
-            id: 5,
-            title: 'Productos',
-            path: '/admin/products',
-            icon: <ConfirmationNumberOutlined />
-        },
-        {
-            id: 6,
-            title: 'Usuarios',
-            path: '/admin/users',
-            icon: <ConfirmationNumberOutlined />
+    const { pathname } = useLocation()
+
+    useEffect(() => {
+        if (auth?.me?.is_staff) {
+            setMenuItems([
+                ...ADMIN_MENU_ITEMS,
+                {
+                    id: 6,
+                    title: 'Usuarios',
+                    path: '/admin/users',
+                    icon: <GroupIcon />
+                }
+            ])
         }
-    ]
+    }, [])
 
     return (
-        <Drawer
-            open={isMenuOpen}
-            anchor="right"
-            sx={{
-                backdropFilter: 'blur(4px)',
-                transition: 'all 0.5s ease-out'
-            }}
-            onClose={toggleSideMenu}
-        >
-            <Box sx={{ width: 250, paddingTop: 5 }}>
-                <List>
-                    {ADMIN_MENU_ITEMS.map((item, index) => (
-                        <ListItem button>
-                            <NavLink
-                                className={({ isActive }) =>
-                                    isActive ? 'selected' : ''
-                                }
-                                style={{
-                                    textDecoration: 'none',
-                                    display: 'flex'
-                                }}
-                                to={item.path}
-                            >
+        <Box sx={{ width: 250, paddingTop: 1 }}>
+            <Typography
+                textAlign="center"
+                fontStyle="italic"
+                fontWeight={800}
+                sx={{ my: 1 }}
+            >
+                Panel de administración
+            </Typography>
+            <Divider />
+            <List>
+                {menuItems.map((item) => (
+                    <NavLink
+                        key={item.id}
+                        style={{
+                            textDecoration: 'none',
+                            display: 'flex',
+                            margin: 2
+                        }}
+                        to={item.path}
+                    >
+                        <ListItemButton selected={pathname === item.path}>
+                            <Box display="flex" sx={{ px: 3, color: 'black' }}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
                                 <ListItemText primary={item.title} />
-                            </NavLink>
-                        </ListItem>
-                    ))}
-                </List>
-            </Box>
-        </Drawer>
+                            </Box>
+                        </ListItemButton>
+                    </NavLink>
+                ))}
+            </List>
+        </Box>
     )
 }

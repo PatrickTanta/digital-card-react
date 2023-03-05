@@ -2,8 +2,11 @@ import { AuthState } from './AuthProvider'
 import { IUser } from '../../interfaces'
 
 type AuthActionType =
-    | { type: '[Auth] - Login' }
-    | { type: '[Auth] - Logout'; payload: { me: IUser; token: string } }
+    | {
+          type: '[Auth] - Login'
+          payload: { me: IUser | undefined | null; token: string } | null
+      }
+    | { type: '[Auth] - Logout' }
 
 export const AuthReducer = (state: AuthState, action: AuthActionType) => {
     switch (action.type) {

@@ -3,10 +3,10 @@ import { IUser } from '../../interfaces'
 
 interface ContextProps {
     // ! properties
-    auth: IUser | undefined | null
+    auth?: { me: IUser | null | undefined; token: string } | null
 
     // ! methods
-    login: () => void
+    login: (token: string) => Promise<void>
     logout: () => void
 }
 
