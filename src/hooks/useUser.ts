@@ -1,11 +1,12 @@
 import { getMeApi, getUsersApi } from '../api/user'
 import { useState } from 'react'
 import { useAuth } from './useAuth'
+import { IUser } from '../interfaces/user'
 
 export const useUser = () => {
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
-    const [users, setUsers] = useState(null)
+    const [users, setUsers] = useState<IUser[] | null>(null)
 
     const { auth } = useAuth()
 
