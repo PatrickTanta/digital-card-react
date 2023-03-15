@@ -8,8 +8,6 @@ import * as React from 'react'
 import Box from '@mui/material/Box'
 import CssBaseline from '@mui/material/CssBaseline'
 import Drawer from '@mui/material/Drawer'
-import Toolbar from '@mui/material/Toolbar'
-import { minHeight } from '@mui/system'
 
 const drawerWidth = 250
 
@@ -85,7 +83,8 @@ export const AdminLayout: FC<Props> = (props) => {
                     minHeight: '100vh'
                 }}
             >
-                <Toolbar />
+                {/* <Toolbar /> */}
+                <br />
                 <Outlet />
             </Box>
         </Box>
